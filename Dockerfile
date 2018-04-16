@@ -9,9 +9,9 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 # mcrypt
 RUN apk add --update --no-cache libmcrypt-dev \
-	&& apk add --no-cache --virtual .phpize-deps-configure $PHPIZE_DEPS \
-	&& pecl install mcrypt-1.0.1 \
-	&& docker-php-ext-enable mcrypt \
+    && apk add --no-cache --virtual .phpize-deps-configure $PHPIZE_DEPS \
+    && pecl install mcrypt-1.0.1 \
+    && docker-php-ext-enable mcrypt \
     && apk del .phpize-deps-configure \
     && docker-php-source delete
 
@@ -35,8 +35,10 @@ RUN docker-php-source extract \
     && docker-php-source delete
 
 # git client, mysql-client
-RUN apk add --update --no-cache git mysql-client curl\
-	&& curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+#RUN apk add --update --no-cache mysql-client
+RUN apk add --update --no-cache git curl\
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    apk del curl
 
 WORKDIR /usr/share/nginx/html
 
